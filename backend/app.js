@@ -24,13 +24,35 @@ const fetchNews = async (keyword, page = 1, pageSize = 5) => {
 					country: "us",
 			  });
 
-		return response;
+		/*
+		In some-cases there are articles whoes content is missing. Filtering such articles
+		Example:		
+		{
+			"source": {
+			"id": null,
+			"name": "[Removed]"
+			},
+			"author": null,
+			"title": "[Removed]",
+			"description": "[Removed]",
+			"url": "https://removed.com",
+			"urlToImage": null,
+			"publishedAt": "1970-01-01T00:00:00Z",
+			"content": "[Removed]"
+		},
+ 		*/
+		const newData = response.articles.filter(
+			(article) => article.content !== "[Removed]"
+		);
+
+		return newData;
 	} catch (error) {
 		console.error("Error fetching news: ", error);
 		throw error;
 	}
 };
 
+// Using Gemini Node JS SDK to do text summarisation.
 const getSummary = async (keyword, page, pageSize) => {
 	try {
 		const newsData = await fetchNews(keyword, page, pageSize);
