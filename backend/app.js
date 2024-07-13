@@ -1,11 +1,13 @@
 const express = require("express");
 const NewsAPI = require("newsapi");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const NodeCache = require("node-cache");
 
 const app = express();
 const port = process.env.PORT || 3000;
 const newsAPI = new NewsAPI(process.env.NEWS_API_KEY);
 const googleAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const myCache = new NodeCache({ stdTTL: 3600 });
 
 const fetchNews = async (keyword, page = 1, pageSize = 5) => {
 	try {
@@ -36,6 +38,13 @@ const getSummary = async (keyword, page, pageSize) => {
 
 		const summaries = await Promise.all(
 			articles.map(async (article) => {
+				const url = article.url;
+				const cacheSummary = myCache.get(url);
+
+				if (cacheSummary) {
+					return { ...article, summaryGeneratedByAI: cacheSummary };
+				}
+
 				const generationConfig = {
 					maxOutputTokens: 128,
 					temperature: 0.5,
@@ -50,9 +59,10 @@ const getSummary = async (keyword, page, pageSize) => {
 
 				const prompt = `Summarize this article from the article URL: ${article.url}`;
 				const summaryResponse = await geminiModel.generateContent(prompt);
-				const summary = await summaryResponse.response.text();
+				const summary = summaryResponse.response.text();
 
-				return { ...article, content: summary };
+				myCache.set(url, summary);
+				return { ...article, summaryGeneratedByAI: summary };
 			})
 		);
 
