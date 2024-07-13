@@ -1,20 +1,22 @@
 const express = require("express");
 const NewsAPI = require("newsapi");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const app = express();
 const port = process.env.PORT || 3000;
-const newsapi = new NewsAPI(process.env.NEWS_API_KEY);
+const newsAPI = new NewsAPI(process.env.NEWS_API_KEY);
+const googleAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const fetchNews = async (keyword, page = 1, pageSize = 5) => {
 	try {
 		const response = keyword
-			? await newsapi.v2.everything({
+			? await newsAPI.v2.everything({
 					q: keyword,
 					language: "en",
 					pageSize: pageSize,
 					page: page,
 			  })
-			: await newsapi.v2.topHeadlines({
+			: await newsAPI.v2.topHeadlines({
 					pageSize: pageSize,
 					page: page,
 					country: "us",
@@ -27,11 +29,46 @@ const fetchNews = async (keyword, page = 1, pageSize = 5) => {
 	}
 };
 
+const getSummary = async (keyword, page, pageSize) => {
+	try {
+		const newsData = await fetchNews(keyword, page, pageSize);
+		const articles = newsData.articles;
+
+		const summaries = await Promise.all(
+			articles.map(async (article) => {
+				const generationConfig = {
+					maxOutputTokens: 128,
+					temperature: 0.5,
+					topP: 1,
+					topK: 1,
+				};
+
+				const geminiModel = googleAI.getGenerativeModel({
+					model: "gemini-1.5-flash-latest",
+					generationConfig,
+				});
+
+				const prompt = `Summarize this article from the article URL: ${article.url}`;
+				const summaryResponse = await geminiModel.generateContent(prompt);
+				const summary = await summaryResponse.response.text();
+
+				return { ...article, content: summary };
+			})
+		);
+
+		newsData.articles = summaries;
+		return newsData;
+	} catch (error) {
+		console.error("Something went wrong, unable to genearate summary: ", error);
+		throw error;
+	}
+};
+
 app.get("/api/v1/news", async (req, res) => {
 	const { keyword, page, pageSize } = req.query;
 
 	try {
-		const newsData = await fetchNews(keyword, page, pageSize);
+		const newsData = await getSummary(keyword, page, pageSize);
 		res.status(200).json(newsData);
 	} catch (error) {
 		console.log(error);

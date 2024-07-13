@@ -14,6 +14,7 @@
 	"author": "Rohan Yadav",
 	"license": "ISC",
 	"dependencies": {
+		"@google/generative-ai": "^0.14.1",
 		"express": "^4.19.2",
 		"newsapi": "^2.4.1"
 	}
