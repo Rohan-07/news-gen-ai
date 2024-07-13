@@ -9,6 +9,7 @@ const newsAPI = new NewsAPI(process.env.NEWS_API_KEY);
 const googleAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const myCache = new NodeCache({ stdTTL: 3600 });
 
+// fetch news data from news-api client
 const fetchNews = async (keyword, page = 1, pageSize = 5) => {
 	try {
 		const response = keyword
@@ -25,7 +26,7 @@ const fetchNews = async (keyword, page = 1, pageSize = 5) => {
 			  });
 
 		/*
-		In some-cases there are articles whoes content is missing. Filtering such articles
+		In some-cases there are articles whose content is missing. Filtering such articles
 		Example:		
 		{
 			"source": {
@@ -52,7 +53,7 @@ const fetchNews = async (keyword, page = 1, pageSize = 5) => {
 	}
 };
 
-// Using Gemini Node JS SDK to do text summarisation.
+// Using Gemini Node JS SDK for text summarisation.
 const getSummary = async (keyword, page, pageSize) => {
 	try {
 		const newsData = await fetchNews(keyword, page, pageSize);
