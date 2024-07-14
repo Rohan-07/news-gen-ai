@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const NewsAPI = require("newsapi");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const NodeCache = require("node-cache");
@@ -42,11 +43,12 @@ const fetchNews = async (keyword, page = 1, pageSize = 5) => {
 			"content": "[Removed]"
 		},
  		*/
-		const newData = response.articles.filter(
+		const nonEmptyArticles = response.articles.filter(
 			(article) => article.content !== "[Removed]"
 		);
 
-		return newData;
+		response.articles = nonEmptyArticles;
+		return response;
 	} catch (error) {
 		console.error("Error fetching news: ", error);
 		throw error;
@@ -57,7 +59,7 @@ const fetchNews = async (keyword, page = 1, pageSize = 5) => {
 const getSummary = async (keyword, page, pageSize) => {
 	try {
 		const newsData = await fetchNews(keyword, page, pageSize);
-		const articles = newsData.articles;
+		const articles = await newsData.articles;
 
 		const summaries = await Promise.all(
 			articles.map(async (article) => {
@@ -80,7 +82,8 @@ const getSummary = async (keyword, page, pageSize) => {
 					generationConfig,
 				});
 
-				const prompt = `Summarize this article from the article URL: ${article.url}`;
+				// Update the prompt as sometime it get this: [GoogleGenerativeAI Error]: Candidate was blocked due to SAFETY
+				const prompt = `Summarize this article from the article URL safely: ${article.url}`;
 				const summaryResponse = await geminiModel.generateContent(prompt);
 				const summary = summaryResponse.response.text();
 
@@ -97,7 +100,14 @@ const getSummary = async (keyword, page, pageSize) => {
 	}
 };
 
-app.get("/api/v1/news", async (req, res) => {
+const corsOptions = {
+	origin: process.env.CLIENT_URL,
+	optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.options("/api/v1/news", cors(corsOptions));
+
+app.get("/api/v1/news", cors(corsOptions), async (req, res) => {
 	const { keyword, page, pageSize } = req.query;
 
 	try {
