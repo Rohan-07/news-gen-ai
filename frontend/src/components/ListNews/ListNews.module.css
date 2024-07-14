@@ -35,7 +35,7 @@ p {
 	gap: 1em;
 }
 
-.page-navigation {
+.page_navigation {
 	margin: 1rem auto;
 	width: 20rem;
 	height: 1rem;
@@ -53,17 +53,17 @@ p {
 	bottom: 0;
 }
 
-.page-navigation span {
+.page_navigation span {
 	font-size: 1.2rem;
 	font-weight: 700;
 }
 
-.btn-primary {
+.btn_primary {
 	border: none;
 	background-color: #fcf5eb;
 	cursor: pointer;
 }
 
-.btn-primary:hover {
+.btn_primary:hover {
 	text-decoration: underline;
 }

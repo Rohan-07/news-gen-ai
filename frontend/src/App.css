@@ -2,16 +2,12 @@ header {
 	display: flex;
 	flex-direction: column;
 	margin-top: 11.4rem;
-	/* padding-top: 2.6em; */
-	/* padding-bottom: 0.54em; */
-	/* border-bottom: 0.1rem solid black; */
 }
 
 .main_heading {
 	position: relative;
 	font-family: "Playfair Display", serif;
 	font-size: 4.4rem;
-	/* margin-top: 2.6em; */
 	padding-bottom: 0.54em;
 	border-bottom: 0.1rem solid black;
 }
@@ -65,7 +61,6 @@ header {
 		align-items: flex-start;
 		justify-content: space-between;
 		margin-top: 14.7rem;
-		/* padding-top: 2.6em; */
 		padding-bottom: 0.54em;
 		border-bottom: 0.1rem solid black;
 	}

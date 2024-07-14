@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import styles from "./ListNews.module.css";
 import Loading from "../Loading";
 import linkArrowIcon from "../../assets/arrow-up-right.svg";
@@ -54,9 +54,9 @@ function ListNews({ serachTerm }) {
 					</div>
 				</article>
 			))}
-			<div className={styles["page-navigation"]}>
+			<div className={styles.page_navigation}>
 				<button
-					className={styles["btn-primary"]}
+					className={styles.btn_primary}
 					onClick={() => setPage((old) => Math.max(old - 1, 1))}
 					disabled={page === 1}
 				>
@@ -64,7 +64,7 @@ function ListNews({ serachTerm }) {
 				</button>
 				<span>{page}</span>
 				<button
-					className={styles["btn-primary"]}
+					className={styles.btn_primary}
 					onClick={() => {
 						if (!data?.data.totalResults - 5 * page <= 0) {
 							setPage((old) => old + 1);
