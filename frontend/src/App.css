@@ -1,42 +1,82 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+header {
+	display: flex;
+	flex-direction: column;
+	margin-top: 11.4rem;
+	/* padding-top: 2.6em; */
+	/* padding-bottom: 0.54em; */
+	/* border-bottom: 0.1rem solid black; */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.main_heading {
+	position: relative;
+	font-family: "Playfair Display", serif;
+	font-size: 4.4rem;
+	/* margin-top: 2.6em; */
+	padding-bottom: 0.54em;
+	border-bottom: 0.1rem solid black;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.main_heading::before {
+	position: absolute;
+	top: -20rem;
+	left: -10rem;
+	content: "N";
+	font-size: 30rem;
+	opacity: 0.05;
+	z-index: -1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.list_news {
+	display: flex;
+	flex-direction: column;
+	gap: 2em;
+	margin-top: 2em;
 }
 
-.card {
-  padding: 2em;
+::placeholder {
+	color: #757575;
+	opacity: 1;
 }
 
-.read-the-docs {
-  color: #888;
+.search_input {
+	background: #fcf2f2;
+	border: 1px solid black;
+	width: -webkit-fill-available;
+	color: #212121;
+	line-height: 2em;
+	padding: 1em 2em;
+	outline-color: black;
+}
+
+.input_container {
+	position: relative;
+}
+
+.input_container img {
+	position: absolute;
+	top: 1.5em;
+	right: 2em;
+}
+
+@media screen and (min-width: 744px) {
+	header {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: space-between;
+		margin-top: 14.7rem;
+		/* padding-top: 2.6em; */
+		padding-bottom: 0.54em;
+		border-bottom: 0.1rem solid black;
+	}
+
+	.main_heading {
+		margin-top: auto;
+		padding-bottom: 0;
+		border: none;
+	}
+
+	.input_container {
+		width: 30%;
+	}
 }

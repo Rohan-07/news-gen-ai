@@ -1,0 +1,69 @@
+h2 {
+	font-family: "Playfair Display", serif;
+	font-size: 2.2rem;
+}
+
+p {
+	margin: 0;
+	font-size: 1.4rem;
+	text-align: justify;
+}
+
+.content::before {
+	display: inline-block;
+	content: url("../../assets/star.svg");
+	width: 1.4rem;
+	height: 1.4rem;
+	margin-right: 0.5rem;
+}
+
+.author {
+	margin-top: 1em;
+	display: flex;
+	gap: 1em;
+	text-decoration: underline;
+}
+
+.author_name {
+	text-transform: uppercase;
+}
+
+.card_bottom {
+	display: flex;
+	align-items: flex-end;
+	margin-top: 1rem;
+	gap: 1em;
+}
+
+.page-navigation {
+	margin: 1rem auto;
+	width: 20rem;
+	height: 1rem;
+	background-color: #fcf5eb;
+	background-blend-mode: overlay;
+	/* border-radius: 100rem; */
+	padding: 2em 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	border: 1px solid black;
+	/* position: fixed; <- for mobile*/
+	z-index: 2;
+	left: calc(50% - 10rem);
+	bottom: 0;
+}
+
+.page-navigation span {
+	font-size: 1.2rem;
+	font-weight: 700;
+}
+
+.btn-primary {
+	border: none;
+	background-color: #fcf5eb;
+	cursor: pointer;
+}
+
+.btn-primary:hover {
+	text-decoration: underline;
+}
