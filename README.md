@@ -41,7 +41,7 @@ Run below commands inside both `/frontend` and `/backend` directory.
    yarn install
   ```
 
-4. **Install Dependencies:**
+4. **Running the Application:**
 
 ***Backend Server:***
 
